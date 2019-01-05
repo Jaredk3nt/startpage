@@ -16,6 +16,8 @@
     "typeface-sarabun": "0.0.71"
   },
   "scripts": {
+    "now-start": "serve --single ./build",
+    "now-build": "npm run build && mv build dist",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

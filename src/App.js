@@ -16,7 +16,7 @@ const colors = ['#ECBD51', '#bc4056', '#d99ac5', '#f18f01', '#83A06C', '#7cea9c'
 
 class App extends Component {
   state = {
-    mode: modes.LIGHT,
+    mode: modes.DARK,
     accent: colors[0],
     links: [],
     edit: false
@@ -61,7 +61,23 @@ class App extends Component {
 
     return (
       <ThemeProvider theme={{ ...theme[mode], accent}}>
-        <Global styles={GlobalStyles} />
+        { mode === modes.DARK ? <Global styles={{ body: { backgroundColor: theme['dark'].bg }}} /> : <Global styles={{ body: { backgroundColor: theme['light'].bg }}} />}
+        <Global styles={{
+            '*': {
+              boxSizing: 'border-box'
+            },
+            body: {
+              margin: 0,
+              padding: 0,
+              width: '100%',
+              height: '100%',
+            },
+            '#root': {
+              width: '100vw',
+              height: '100vh'
+            }
+          }}
+        />
         <StartPage>
           <Info />
           <LinksList>
@@ -106,28 +122,15 @@ class App extends Component {
   }
 }
 
-const GlobalStyles = css`
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
-  #root {
-    width: 100vw;
-    height: 100vh;
-  }
-`;
-
 const StartPage = styled('div')`
+  position: relative;
+  display: grid;
   width: 100%;
+  max-width: 600px;
   height: 100%;
   padding-top: 1em;
-  background-color: ${p => p.theme.bg};
-  display: grid;
+  margin: 0 auto;
+
   grid-template-rows: 25% 1fr calc(${p => p.theme.size.toolbar}px + 1em);
 `;
 

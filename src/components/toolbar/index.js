@@ -9,49 +9,6 @@ import Flex from '../flex';
 const modes = { COLOR_PICKER: 'color', ADD: 'add' };
 const themeModes = { DARK: 'dark', LIGHT: 'light' };
 
-function ColorSelectorPanel({ colors, onClick }) {
-    return (
-        <ColorPicker>
-            {colors.map(color => (
-                <ColorButton color={color} onClick={() => onClick(color)} key={color} />
-            ))}
-        </ColorPicker>
-    );
-}
-
-function LinkForm({ updateLabel, updateLink, label, url, cancel, add }) {
-    return (
-        <AddForm>
-            <AddInput
-                placeholder='Bookmark Name'
-                onChange={e => updateLabel(e.target.value)}
-            />
-            <AddInput
-                placeholder='Bookmark Link'
-                onChange={e => updateLink(e.target.value)}
-            />
-            <AddFormButtons>
-                <Button
-                    w='100%'
-                    m='0em .5em 0em 0em'
-                    type='button'
-                    onClick={cancel}
-                >
-                    CANCEL
-                </Button>
-                <Button
-                    primary
-                    w='100%'
-                    type='button'
-                    onClick={add}
-                >
-                    ADD
-                </Button>
-            </AddFormButtons>
-        </AddForm>
-    );
-}
-
 class Toolbar extends Component {
     state = {
         mounted: false,
@@ -64,7 +21,7 @@ class Toolbar extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.setState({ mounted: true });
-        }, 475)
+        }, 200)
     }
 
     toggleOpen = mode => {
@@ -100,7 +57,7 @@ class Toolbar extends Component {
                     label={label}
                     updateLabel={val => this.setState({ label: val })}
                     updateLink={val => this.setState({ url: val })}
-                    cancel={this.toggleOpen}
+                    cancel={() => this.toggleOpen()}
                     add={() => {
                         if (label && url) {
                             this.props.addLink({ label, url, id: shortid.generate() });
@@ -160,6 +117,57 @@ class Toolbar extends Component {
     }
 }
 
+function ColorSelectorPanel({ colors, onClick }) {
+    return (
+        <ColorPicker>
+            {colors.map(color => (
+                <ColorButton color={color} onClick={() => onClick(color)} key={color} />
+            ))}
+        </ColorPicker>
+    );
+}
+
+function LinkForm({ updateLabel, updateLink, label, url, cancel, add }) {
+    return (
+        <AddForm>
+            <AddInput
+                placeholder='Bookmark Name'
+                onChange={e => updateLabel(e.target.value)}
+            />
+            <AddInput
+                placeholder='Bookmark Link'
+                onChange={e => updateLink(e.target.value)}
+            />
+            <AddFormButtons>
+                <Button
+                    w='100%'
+                    m='0em .5em 0em 0em'
+                    type='button'
+                    onClick={cancel}
+                >
+                    CANCEL
+                </Button>
+                <Button
+                    primary
+                    w='100%'
+                    type='button'
+                    onClick={add}
+                >
+                    ADD
+                </Button>
+            </AddFormButtons>
+        </AddForm>
+    );
+}
+
+function ColorButton({ color, onClick }) {
+    return (
+        <Button h='100%' onClick={onClick}>
+            <AccentMarker color={color} />
+        </Button>
+    );
+}
+
 const ToolbarStyles = styled('nav')`
     position: absolute;
     bottom: 0;
@@ -201,14 +209,6 @@ const ColorPicker = styled('div')`
         margin-right: 5px;
     }
 `;
-
-function ColorButton({ color, onClick }) {
-    return (
-        <Button h='100%' onClick={onClick}>
-            <AccentMarker color={color} />
-        </Button>
-    );
-}
 
 const AddForm = styled('form')`
     width: 100%;
